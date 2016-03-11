@@ -17,7 +17,7 @@ public class QuizDataBlock {
     public String BlockName;
     public int indexStarts;
     public int indexEnds;
-    List<String> ParsedData = new ArrayList<>();
+    List<String> ParsedData;
     public boolean isParsed = false;
     
     
@@ -25,29 +25,29 @@ public class QuizDataBlock {
         boolean isParsing = true;
         boolean isBuildingVariable = false;
         int index = -1;
+        int startIndex = -1;
         String NextCharacter = null;
-        System.out.println("length :" + data.length());
         
         while (isParsing) {
             index++;
-            //System.out.println("index :" + index);
             if (index == data.length()) {
                 isParsing = false;
-                System.out.println("DONE BUILDING!");
+                break;
             } else {
                 NextCharacter = data.substring(index, index + 1);
-                if (!"\n".equals(NextCharacter)) {
-                    System.out.println("NextCharacter :" + NextCharacter);
-                }
             }
-            //TODO write code to act on the current sub character
             if ("'".equals(NextCharacter) && !isBuildingVariable) {
-                
-                
-            
+                isBuildingVariable = true;
+                startIndex = index+1;
+            } else if("'".equals(NextCharacter) && isBuildingVariable) {
+                isBuildingVariable = false;
+                String substr = data.substring(startIndex,index);
+                if(ParsedData == null){
+                    ParsedData = new ArrayList<>();
+                }
+                ParsedData.add(substr);
             }
         }
-        
+        isParsed = true;
     }
-    
 }

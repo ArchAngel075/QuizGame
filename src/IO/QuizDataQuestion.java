@@ -17,8 +17,31 @@ public class QuizDataQuestion {
     public int indexStarts;
     public int indexEnds;
     public List<QuizDataBlock> Blocks = new ArrayList<>();
+    public String CorrectReply;
+    public String WrongReply;
+    public String Question;
     
     public QuizDataBlock LastBlock(){
         return this.Blocks.get(this.Blocks.size()-1);
+    }
+
+    public List<String> getAnswersAcceptedProperty(){
+        List<String> out = null;
+        for(QuizDataBlock Block : Blocks){
+            if("AnswersAccepted".equals(Block.BlockName)){
+                out = (Block.ParsedData);
+            }
+        }
+        return out;
+    }
+    
+    public List<String> getMultiChoiceAnswersGivenProperty(){
+        List<String> out = null;
+        for(QuizDataBlock Block : Blocks){
+            if("MultiChoiceAnswersGiven".equals(Block.BlockName)){
+                out = (Block.ParsedData);
+            }
+        }
+        return out;
     }
 }

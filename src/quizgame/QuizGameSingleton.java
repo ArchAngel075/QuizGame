@@ -16,33 +16,23 @@ import quizgame.QuizCore.Quiz;
  * @author Arch
  */
 public class QuizGameSingleton {
-    static Quiz TheQuiz = new Quiz();
-    static QuizWindow QuizWindow;
+    static Quiz TheQuiz;
+    public static QuizWindow QuizWindow;
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        List<String> Answers = new ArrayList<>();
-        Answers.add("42");
-        
-        List<String> AnswersGiven = new ArrayList<>();
-        AnswersGiven.add("42");
-        AnswersGiven.add("What?");
-        AnswersGiven.add("no");
-        TheQuiz.AddQuestion( new Question (Answers, null, "YOU ARE ABSOLUTELY FUCKING RIGHT", "no", "life the universe..."));
-        
-        TheQuiz.AddQuestion( new Question (Answers, AnswersGiven, "yes", "no", "life the universe..."));
-        TheQuiz.InitQuiz();
-        TheQuiz.NextQuestion();
-        // TODO code application logic here
-        //QuizWindow = new QuizWindow();
-        //QuizWindow.setVisible(true);
-        
-        //Quiz Reader debug :
+        //Quiz Reader
         QuizReader MYReader = new QuizReader();
         MYReader.ParseFile();
         MYReader.build();
+        TheQuiz = MYReader.ToQuiz();
+        TheQuiz.NextQuestion();
+        QuizGameSingleton.QuizWindow = new QuizWindow();
+        QuizGameSingleton.QuizWindow.setVisible(true);
+        
+        
         
     }
     

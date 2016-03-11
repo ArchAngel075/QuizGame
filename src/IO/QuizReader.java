@@ -8,6 +8,8 @@ package IO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import quizgame.QuizCore.Question;
+import quizgame.QuizCore.Quiz;
 
 /**
  *
@@ -20,6 +22,7 @@ public class QuizReader {
     public String ReadOut = null;
     public String QuizFileName;
     List<String> DataBlocks = new ArrayList<>();
+    List<QuizDataQuestion> Questions;
 
     public void ParseFile() {
         // The name of the file to open.
@@ -46,7 +49,6 @@ public class QuizReader {
             }
 
             bufferedReader.close();
-            //System.out.println(ReadOut);
         } catch (FileNotFoundException ex) {
             System.out.println(
                     "Unable to open file '"
@@ -76,40 +78,41 @@ public class QuizReader {
     }
 
     public void build() {
-        System.out.println("buildDataBlocks()");
-        //System.out.println(ReadOut);
-        System.out.println();
-
         boolean isBuilding = true;
         int index = -1;
 
         boolean isBuildingQuestion = false;
+        int IndexOfQuestionStart = -1;
         boolean isBuilingBlock = false;
 
-        List<QuizDataQuestion> Questions = new ArrayList<>();
+        Questions = new ArrayList<>();
         String NextCharacter = null;
-        System.out.println("length :" + ReadOut.length());
         while (isBuilding) {
             index++;
-            //System.out.println("index :" + index);
             if (index == ReadOut.length()) {
                 isBuilding = false;
-                System.out.println("DONE BUILDING!");
                 break;
             } else {
                 NextCharacter = ReadOut.substring(index, index + 1);
-                if (!"\n".equals(NextCharacter)) {
-                    System.out.println("NextCharacter :" + NextCharacter);
-                }
             }
 
             if ("{".equals(NextCharacter) && !isBuildingQuestion) {
                 isBuildingQuestion = true;
+                IndexOfQuestionStart = index;
+                //non bundled data :
+                int indexCorrectReplyStart = ReadOut.indexOf("CorrectReply='",IndexOfQuestionStart)+"CorrectReply='".length();
+                String CorrectReply = ReadOut.substring(indexCorrectReplyStart,ReadOut.indexOf("'",indexCorrectReplyStart));
+                
+                int indexWrongReplyStart = ReadOut.indexOf("WrongReply='",IndexOfQuestionStart)+"WrongReply='".length();
+                String WrongReply = ReadOut.substring(indexWrongReplyStart,ReadOut.indexOf("'",indexWrongReplyStart));
+                
+                int indexQuestionStart = ReadOut.indexOf("Question='",IndexOfQuestionStart)+"Question='".length();
+                String Question = ReadOut.substring(indexQuestionStart,ReadOut.indexOf("'",indexQuestionStart));
                 Questions.add(new QuizDataQuestion());
+                Questions.get(Questions.size() - 1).CorrectReply = CorrectReply;
+                Questions.get(Questions.size() - 1).WrongReply = WrongReply;
+                Questions.get(Questions.size() - 1).Question = Question;
                 Questions.get(Questions.size() - 1).indexStarts = index;
-                System.out.println();
-                System.out.println("Build Question");
-                System.out.println();
             } else if ("{".equals(NextCharacter) && isBuildingQuestion && !isBuilingBlock) {
                 isBuilingBlock = true;
 
@@ -118,47 +121,47 @@ public class QuizReader {
                 //iterate backwards until we get the name of variable :
                 boolean isBuildingVariableName = true;
                 int iindex = index-1;
-                while(isBuildingVariableName == true){
+                while(isBuildingVariableName){
                    iindex--; 
                    String substr = ReadOut.substring(iindex, iindex +1);
                    if(iindex == 0 || "\n".equals(substr) || substr.isEmpty() || java.lang.Character.isWhitespace(substr.charAt(0))){
                        Qblock.BlockName = ReadOut.substring(iindex + 1 , index - 1);
-                       System.out.println();
                        Qblock.indexStarts = iindex+1;
                        isBuildingVariableName = false;
                    }
                 }
                 Questions.get(Questions.size() - 1).Blocks.add(Qblock);
-                System.out.println();
-                System.out.println("Build Block");
-                System.out.println();
             } else if ("}".equals(NextCharacter) && isBuildingQuestion && !isBuilingBlock) {
                 Questions.get(Questions.size() - 1).indexEnds = index;
                 Questions.get(Questions.size() - 1).data = ReadOut.substring(
                         Questions.get(Questions.size() - 1).indexStarts,
                         Questions.get(Questions.size() - 1).indexEnds+1);
                 isBuildingQuestion = false;
-                System.out.println();
-                System.out.println("QUIZ DATA:");
-                System.out.println(Questions.get(Questions.size() - 1).data);
-                System.out.println("--------------------------------");
-                System.out.println();
             } else if ("}".equals(NextCharacter) && isBuildingQuestion && isBuilingBlock) {
                 Questions.get(Questions.size() - 1).LastBlock().indexEnds = index;
                 Questions.get(Questions.size() - 1).LastBlock().data = ReadOut.substring(
                         Questions.get(Questions.size() - 1).LastBlock().indexStarts,
                         Questions.get(Questions.size() - 1).LastBlock().indexEnds+1);
                 isBuilingBlock = false;
-                System.out.println();
-                System.out.println("BLOCK DATA:");
-                System.out.println(Questions.get(Questions.size() - 1).LastBlock().data);
-                System.out.println("--------------------------------");
-                System.out.println();
             }
-
+            
         }
-        //find a potential open block :
-
+        for(QuizDataQuestion Question : Questions){
+            for(QuizDataBlock Block : Question.Blocks){
+                Block.parse();
+            }    
+        }
+    }
+    
+    public Quiz ToQuiz(){
+//        
+        Quiz TheQuiz = new Quiz();
+        
+        for(QuizDataQuestion Question : Questions){
+            TheQuiz.AddQuestion( new Question (Question.getAnswersAcceptedProperty(), Question.getMultiChoiceAnswersGivenProperty(), Question.CorrectReply, Question.WrongReply, Question.Question));
+        }
+        TheQuiz.InitQuiz();
+        return TheQuiz;
     }
 
 }

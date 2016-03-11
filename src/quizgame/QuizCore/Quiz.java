@@ -6,6 +6,8 @@ package quizgame.QuizCore;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import quizgame.QuizGameSingleton;
+import quizgame.QuizWindow;
 
 /**
  *
@@ -20,7 +22,6 @@ public class Quiz {
   
   
   public boolean isPlainQuestion(){
-      System.out.println("is Plain Question :" + CurrentQuestion.isPlainQuestion());
       return (CurrentQuestion.isPlainQuestion());
   }
   

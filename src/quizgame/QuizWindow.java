@@ -21,7 +21,7 @@ public class QuizWindow extends javax.swing.JFrame {
 
     public QuizWindow() {
         initComponents();
-        System.out.println(GetNextQuestionAndUpdate());
+        GetNextQuestionAndUpdate(); // initialise the first question
     }
     
     public void GiveAnswer(String Ans){
@@ -42,6 +42,7 @@ public class QuizWindow extends javax.swing.JFrame {
     public void OnCorrectQuestion(){
         JOptionPane.showMessageDialog(this, QuizGameSingleton.TheQuiz.GetOnCorrectReply());
         QuizGameSingleton.TheQuiz.Score++;
+        Score_Lbl.setText("Score = " + QuizGameSingleton.TheQuiz.Score);
     }
     
     public void OnWrongQuestion(){
@@ -66,13 +67,11 @@ public class QuizWindow extends javax.swing.JFrame {
     public JPanel GetPanel() {
         JPanel outPanel = null;
         if (IsPlainQuestion()) {
-            System.out.println("is plain");
             PlainChoicePanel PlainQuestionPanel = new PlainChoicePanel();
             PlainQuestionPanel.QuestionAsked_lbl.setText(QuizGameSingleton.TheQuiz.GetQuestion());
 
             outPanel = PlainQuestionPanel;
         } else {
-            System.out.println("is NOT plain");
             MultiChoicePanel MultiChoicePanel = new MultiChoicePanel();
             MultiChoicePanel.QuestionAsked_lbl.setText(QuizGameSingleton.TheQuiz.GetQuestion());
             for(String givenChoice : QuizGameSingleton.TheQuiz.GetMultiChoiceAnswersGiven()){
@@ -80,7 +79,6 @@ public class QuizWindow extends javax.swing.JFrame {
             }
             outPanel = MultiChoicePanel;
         }
-        System.out.println("GetPanel() Resulted in :" + outPanel);
         return outPanel;
     }
 
@@ -101,7 +99,7 @@ public class QuizWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        Score_Lbl.setText("Score = " + QuizGameSingleton.TheQuiz.Score);
+        Score_Lbl.setText("Score = ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
