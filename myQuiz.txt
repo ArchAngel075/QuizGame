@@ -1,0 +1,14 @@
+{
+    AnswersAccepted={
+        "42"
+        "computer"
+    }
+    MultiChoiceAnswersGiven={
+        "42"
+        "computer"
+        "what"
+        "everything!"
+    }
+    CorrectReply="Yup that is correct"
+    WrongReply="No you are WRONG"
+}
