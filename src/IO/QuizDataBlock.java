@@ -28,19 +28,24 @@ public class QuizDataBlock {
         String NextCharacter = null;
         System.out.println("length :" + data.length());
         
-        while (isBuilding) {
+        while (isParsing) {
             index++;
             //System.out.println("index :" + index);
             if (index == data.length()) {
-                isBuilding = false;
+                isParsing = false;
                 System.out.println("DONE BUILDING!");
             } else {
-                NextCharacter = ReadOut.substring(index, index + 1);
+                NextCharacter = data.substring(index, index + 1);
                 if (!"\n".equals(NextCharacter)) {
                     System.out.println("NextCharacter :" + NextCharacter);
                 }
             }
             //TODO write code to act on the current sub character
+            if ("'".equals(NextCharacter) && !isBuildingVariable) {
+                
+                
+            
+            }
         }
         
     }

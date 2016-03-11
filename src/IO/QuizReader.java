@@ -95,6 +95,7 @@ public class QuizReader {
             if (index == ReadOut.length()) {
                 isBuilding = false;
                 System.out.println("DONE BUILDING!");
+                break;
             } else {
                 NextCharacter = ReadOut.substring(index, index + 1);
                 if (!"\n".equals(NextCharacter)) {
