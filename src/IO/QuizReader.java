@@ -8,6 +8,8 @@ package IO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import quizgame.QuizCore.Question;
 import quizgame.QuizCore.Quiz;
 
@@ -26,7 +28,17 @@ public class QuizReader {
 
     public void ParseFile() {
         // The name of the file to open.
-        QuizFileName = "myQuiz.txt";
+        
+        JFileChooser MYChooser = new JFileChooser("./");
+        MYChooser.setFileFilter(new QuizFileFilter ());
+        
+        while(true){
+            int returnVal = MYChooser.showOpenDialog(null);
+            if(returnVal == JFileChooser.APPROVE_OPTION){
+                break;
+            }
+        }
+        QuizFileName = MYChooser.getSelectedFile().getAbsolutePath();
 
         // This will reference one line at a time
         String line = null;
