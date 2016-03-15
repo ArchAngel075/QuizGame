@@ -1,14 +1,26 @@
 {
     AnswersAccepted={
-        "42"
-        "computer"
+        '43'
+        'computer'
     }
     MultiChoiceAnswersGiven={
-        "42"
-        "computer"
-        "what"
-        "everything!"
+        '42'
+        'computer'
+        'what'
+        'everything!'
     }
-    CorrectReply="Yup that is correct"
-    WrongReply="No you are WRONG"
+    CorrectReply='Yup that is correct'
+    WrongReply='No you are WRONG'
+    Question='What is Life, The Universe, Everything?'
+}
+{
+    AnswersAccepted={
+        '4'
+    }
+    MultiChoiceAnswersGiven={
+    
+    }
+    CorrectReply='2 is correct'
+    WrongReply='incorrect answer'
+    Question='2+2?'
 }
