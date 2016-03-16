@@ -1,26 +1,36 @@
 {
     AnswersAccepted={
-        '43'
-        'computer'
+        'True'
     }
     MultiChoiceAnswersGiven={
-        '42'
-        'computer'
-        'what'
-        'everything!'
+        'True'
+        'False'
     }
-    CorrectReply='Yup that is correct'
-    WrongReply='No you are WRONG'
-    Question='What is Life, The Universe, Everything?'
+    CorrectReply='Correct'
+    WrongReply='Incorrect'
+    Question='True Or False. String and Integer are all data types?'
 }
 {
     AnswersAccepted={
-        '4'
+        'Hello World'
     }
     MultiChoiceAnswersGiven={
-    
     }
-    CorrectReply='2 is correct'
-    WrongReply='incorrect answer'
-    Question='2+2?'
+    CorrectReply='Yes! Hello Programmer!'
+    WrongReply='Incorrect'
+    Question='What will the result of [System.out.println("Hello World")] be'
+}
+{
+    AnswersAccepted={
+        'public String method()'
+    }
+    MultiChoiceAnswersGiven={
+        'public String method()'
+        'public Integer method()'
+        'public void method()'
+        'public Boolean method()'
+    }
+    CorrectReply='Correct'
+    WrongReply='Incorrect'
+    Question='Select which of the choices given would be a method that returns a String : '
 }
